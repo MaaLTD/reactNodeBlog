@@ -1,13 +1,11 @@
-// для включения функций импортирования включить type = module в package.json или в тэге script
 import express from 'express';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
-import sanitize, {middleware} from 'sanitize';
+import sanitize from 'sanitize';
 import * as sanitizeHtml from 'sanitize-html';
 import {validationResult} from "express-validator";
 import {registerValidation} from "./validations/auth.js";
 import {User} from './Models/User.js';
-
 const app = express();
 app.use(express.json());
 app.use(sanitize.middleware);
@@ -75,7 +73,7 @@ app.post('/auth/login', (req, res) => {
     });
 });
 
-app.listen(4444,(err) => {
+app.listen(process.env.APP_PORT | 4444,(err) => {
     if(err) {
         return console.log(err)
     }
