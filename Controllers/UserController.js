@@ -2,6 +2,7 @@ import {User} from "../Models/User.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import {validationResult} from "express-validator";
+import Config from "../Config/Enviroments.js";
 
 export const register = async(req, res) => {
     const errors = validationResult(req);
@@ -31,7 +32,7 @@ export const register = async(req, res) => {
             const token = jwt.sign({
                     _id: user._id
                 },
-                process.env.APP_SECRET_KEY,
+                Config.appSecretKey,
                 {
                     expiresIn: '30d'
                 });
@@ -39,7 +40,7 @@ export const register = async(req, res) => {
         }
     } catch (e) {
         console.log(e);
-        res.json({"message": "Не удалось зарегестрировать Вас. Обратитесь в службу поддержки."})
+        res.status(500).json({"message": "Не удалось зарегестрироваться"})
     }
 };
 export const login = async (req, res) => {
@@ -50,7 +51,7 @@ export const login = async (req, res) => {
             const token = jwt.sign({
                     _id: user._id
                 },
-                process.env.APP_SECRET_KEY,
+                Config.appSecretKey,
                 {
                     expiresIn: '30d'
                 });
@@ -70,5 +71,4 @@ export const getMe = async (req, res) => {
     const user = await User.findOne({where: {_id: userId}});
 
     res.status(200).json({reqs: user});
-    // res.json({userID: req.userId});
 };

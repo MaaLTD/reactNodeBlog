@@ -1,12 +1,9 @@
-import dotenv from 'dotenv';
+import Config from "../Config/Enviroments.js";
 import { Sequelize } from "sequelize";
 
-dotenv.config();
-const params = process.env;
-
-export const sequelize = new Sequelize(params.DB_NAME, params.DB_USER, params.DB_PSWD, {
-    host: params.DB_HOST,
-    dialect: params.DB_DRIVER, /* 'mysql' | 'mariadb' | 'postgres' | 'mssql' */
+export const sequelize = new Sequelize(Config.dbName, Config.dbUser, Config.dbPassword, {
+    host: Config.dbHost,
+    dialect: Config.dbDriver, /* 'mysql' | 'mariadb' | 'postgres' | 'mssql' */
     dialectOptions: {
         connectTimeout: 1000
     }
@@ -23,7 +20,7 @@ export const Open = async () => {
 
 export const Close = () => {
     sequelize.close()
-        .then((value) => {
+        .then(() => {
             console.log('Соединение с БД успешно закрыто');
         })
         .catch((err) => {
